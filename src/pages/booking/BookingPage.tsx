@@ -61,10 +61,17 @@ const Booking: React.FC<BookingProps> = (props) => {
     return (
         <div className="space-y-6">
             <PageHeader 
-                title="Jadwal Wedding" 
-                subtitle="Pantau seluruh jadwal Acara Pernikahan, Acara Pernikahan wedding, dan pengingat pelunasan." 
+                title="Penjadwalan Wedding" 
+                subtitle="Pantau seluruh antrian booking, verifikasi pembayaran DP, dan jadwalkan Acara Pernikahan dengan kalender terpadu." 
                 icon={<CalendarIcon className="w-6 h-6" />} 
-            />
+            >
+                <button 
+                    onClick={() => setIsInfoModalOpen(true)} 
+                    className="px-4 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                >
+                    Pelajari
+                </button>
+            </PageHeader>
 
             <BookingStats 
                 allBookingsCount={allBookings.length}

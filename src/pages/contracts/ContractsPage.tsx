@@ -75,16 +75,23 @@ const Contracts: React.FC<ContractsProps> = ({
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <PageHeader 
-                title="Kontrak" 
-                subtitle="Buat, kelola, dan arsipkan semua kontrak kerja Anda." 
+                title="Kontrak Digital" 
+                subtitle="Buat, kelola, dan arsipkan semua kontrak kerja vendor Anda dengan sistem tanda tangan digital yang aman." 
                 icon={<FileTextIcon className="w-6 h-6" />}
             >
-                <div className="flex items-center gap-2">
-                    <button onClick={() => setIsInfoModalOpen(true)} className="button-secondary">Pelajari Halaman Ini</button>
-                    <button onClick={() => handleOpenModal('add')} className="button-primary inline-flex items-center gap-2 shadow-lg shadow-brand-accent/20">
-                        <PlusIcon className="w-5 h-5"/> Buat Kontrak
-                    </button>
-                </div>
+                <button 
+                    onClick={() => setIsInfoModalOpen(true)} 
+                    className="px-4 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                >
+                    Pelajari
+                </button>
+                <button 
+                    onClick={() => handleOpenModal('add')} 
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all text-xs sm:text-sm font-black shadow-lg shadow-blue-900/40"
+                >
+                    <PlusIcon className="w-5 h-5"/>
+                    <span>Buat Kontrak</span>
+                </button>
             </PageHeader>
 
             <ContractStats 

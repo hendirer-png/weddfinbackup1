@@ -21,17 +21,29 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onDragStart, onClick, 
     const renderActions = () => {
         if (lead.status === LeadStatus.DISCUSSION) {
             return (
-                <div className="flex items-center gap-1.5 md:gap-2 leads-card-actions">
-                    <button onClick={(e) => { e.stopPropagation(); onShare('package'); }} className="button-secondary !p-2 md:!p-2.5" title="Bagikan Package"><Share2Icon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
-                    <button onClick={(e) => { e.stopPropagation(); onNextStatus(); }} className="button-primary !text-xs !px-3 md:!px-4 !py-2 md:!py-2.5 inline-flex items-center gap-1">Follow Up <ChevronRightIcon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
+                <div className="flex items-center gap-2 leads-card-actions">
+                    <button onClick={(e) => { e.stopPropagation(); onShare('package'); }} className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Bagikan Package">
+                        <Share2Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="text-[10px] md:text-xs font-bold whitespace-nowrap">Package</span>
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); onNextStatus(); }} className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all text-[10px] md:text-xs font-bold shadow-sm">
+                        <span>Follow Up</span>
+                        <ChevronRightIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    </button>
                 </div>
             );
         }
         if (lead.status === LeadStatus.FOLLOW_UP) {
             return (
-                <div className="flex items-center gap-1.5 md:gap-2 leads-card-actions">
-                    <button onClick={(e) => { e.stopPropagation(); onShare('booking'); }} className="button-secondary !p-2 md:!p-2.5" title="Kirim Form Booking"><SendIcon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
-                    <button onClick={(e) => { e.stopPropagation(); onNextStatus(); }} className="button-primary !text-xs !px-3 md:!px-4 !py-2 md:!py-2.5 inline-flex items-center gap-1">Konversi <CheckCircleIcon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
+                <div className="flex items-center gap-2 leads-card-actions">
+                    <button onClick={(e) => { e.stopPropagation(); onShare('booking'); }} className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Kirim Form Booking">
+                        <SendIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="text-[10px] md:text-xs font-bold whitespace-nowrap">Booking</span>
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); onNextStatus(); }} className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all text-[10px] md:text-xs font-bold shadow-sm">
+                        <span>Konversi</span>
+                        <CheckCircleIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    </button>
                 </div>
             );
         }
@@ -59,8 +71,14 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onDragStart, onClick, 
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                     {isHot && <span className="text-base md:text-lg" title="Calon Pengantin baru (24 jam terakhir)">🔥</span>}
                     {needsFollowUp && <span className="text-base md:text-lg" title="Perlu Follow Up">⏰</span>}
-                    <button onClick={(e) => { e.stopPropagation(); onEdit(); }} className="button-secondary !p-2 md:!p-2.5" title="Edit"><PencilIcon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
-                    <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="button-secondary !p-2 md:!p-2.5" title="Hapus"><Trash2Icon className="w-3.5 h-3.5 md:w-4 md:h-4" /></button>
+                    <button onClick={(e) => { e.stopPropagation(); onEdit(); }} className="inline-flex items-center space-x-1.5 px-2 md:px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                        <PencilIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="text-[10px] md:text-xs font-bold">Edit</span>
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="inline-flex items-center space-x-1.5 px-2 md:px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                        <Trash2Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="text-[10px] md:text-xs font-bold">Hapus</span>
+                    </button>
                 </div>
             </div>
             {lead.notes && (

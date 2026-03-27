@@ -73,10 +73,19 @@ const ProjectListView: React.FC<ProjectListViewProps> = ({
                             </td>
                             <td className="px-6 py-4 text-brand-text-primary">{p.team.map(t => t.name.split(' ')[0]).join(', ') || '-'}</td>
                             <td className="px-6 py-4">
-                                <div className="flex items-center justify-center space-x-1">
-                                    <button onClick={() => handleOpenDetailModal(p)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Detail Acara Pernikahan"><EyeIcon className="w-5 h-5 text-white" /></button>
-                                    <button onClick={() => handleOpenForm('edit', p)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Edit Acara Pernikahan"><PencilIcon className="w-5 h-5 text-white" /></button>
-                                    <button onClick={() => handleProjectDelete(p.id)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-600 hover:bg-red-700 transition-colors" title="Hapus Acara Pernikahan"><Trash2Icon className="w-5 h-5 text-white" /></button>
+                                <div className="flex items-center justify-center space-x-2">
+                                    <button onClick={() => handleOpenDetailModal(p)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Detail Acara Pernikahan">
+                                        <EyeIcon className="w-4 h-4" />
+                                        <span className="text-xs font-bold">Detail</span>
+                                    </button>
+                                    <button onClick={() => handleOpenForm('edit', p)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit Acara Pernikahan">
+                                        <PencilIcon className="w-4 h-4" />
+                                        <span className="text-xs font-bold">Edit</span>
+                                    </button>
+                                    <button onClick={() => handleProjectDelete(p.id)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus Acara Pernikahan">
+                                        <Trash2Icon className="w-4 h-4" />
+                                        <span className="text-xs font-bold">Hapus</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

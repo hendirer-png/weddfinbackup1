@@ -1,6 +1,6 @@
 import React from 'react';
 import { Package } from '@/types';
-import { CameraIcon, Trash2Icon } from '@/constants';
+import { CameraIcon, Trash2Icon, PencilIcon } from '@/constants';
 import { formatCurrency } from '@/features/booking/utils/booking.utils';
 
 interface PackageCardProps {
@@ -85,8 +85,14 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg, onEdit, onDelete }) => {
                 </div>
 
                 <div className="flex gap-2 mt-4 pt-4 border-t border-brand-border/50">
-                    <button onClick={() => onEdit(pkg)} className="button-secondary flex-1 text-xs py-2 shadow-sm">Edit Package</button>
-                    <button onClick={() => onDelete(pkg.id)} className="button-secondary !p-2 md:!p-2.5 text-brand-text-secondary hover:text-red-600 hover:border-red-300 hover:bg-red-50 flex-shrink-0" title="Hapus Package"><Trash2Icon className="w-4 h-4" /></button>
+                    <button onClick={() => onEdit(pkg)} className="inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all flex-1 text-xs font-bold shadow-sm group">
+                        <PencilIcon className="w-4 h-4" />
+                        <span>Edit Package</span>
+                    </button>
+                    <button onClick={() => onDelete(pkg.id)} className="inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-xs font-bold shadow-sm group" title="Hapus Package">
+                        <Trash2Icon className="w-4 h-4" />
+                        <span className="hidden sm:inline">Hapus</span>
+                    </button>
                 </div>
             </div>
         </div>

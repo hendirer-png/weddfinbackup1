@@ -24,8 +24,6 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ activeView, setActiveView,
         ViewType.BOOKING,
         ViewType.CALENDAR,
         ViewType.CLIENTS,
-        ViewType.PROJECTS,
-        ViewType.CONTRACTS,
       ],
     },
     {
@@ -246,7 +244,10 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ activeView, setActiveView,
                         `}
                         style={{
                           animationDelay: `${(navAnimationIndexMap.get(item.view) ?? 0) * 50}ms`,
-                          animation: isOpen ? 'slideInLeft 0.3s ease-out forwards' : 'none'
+                          animationName: isOpen ? 'slideInLeft' : 'none',
+                          animationDuration: '0.3s',
+                          animationTimingFunction: 'ease-out',
+                          animationFillMode: 'forwards'
                         }}
                       >
                         {/* Background shimmer effect for active item */}

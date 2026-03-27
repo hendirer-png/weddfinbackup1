@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lead, Project, Client, BookingStatus, ViewType, NavigationAction } from '@/types';
-import { PencilIcon, Trash2Icon, WhatsappIcon, CalendarIcon } from '@/constants';
+import { PencilIcon, Trash2Icon, WhatsappIcon, CalendarIcon, EyeIcon, CheckCircleIcon } from '@/constants';
 import { formatCurrency, formatDate } from '@/features/booking/utils/booking.utils';
 
 interface BookingTableProps {
@@ -83,22 +83,38 @@ const BookingTable: React.FC<BookingTableProps> = ({
                                 <span className="text-brand-text-secondary">DP Dibayar</span>
                                 <span className="text-right font-semibold text-green-400">{formatCurrency(booking.project.amountPaid)}</span>
                             </div>
-                            <div className="mt-3 flex items-center justify-end gap-2 flex-wrap">
+                            <div className="mt-3 flex items-center justify-end gap-1.5 flex-wrap">
                                 {booking.project.dpProofUrl && (
-                                    <button onClick={() => onViewProof?.(booking.project.dpProofUrl!)} className="button-secondary !text-[10px] !px-2.5 !py-1.5">Lihat Bukti</button>
-                                )}
-                                {onOpenWhatsapp && client && (
-                                    <button onClick={() => onOpenWhatsapp(booking.project, client)} className="button-secondary !text-[10px] !px-2.5 !py-1.5 flex items-center gap-1">
-                                        <WhatsappIcon className="w-3 h-3" /> WA
+                                    <button onClick={() => onViewProof?.(booking.project.dpProofUrl!)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Lihat Bukti Bayar">
+                                        <EyeIcon className="w-3.5 h-3.5" />
+                                        <span>Bukti</span>
                                     </button>
                                 )}
-                                <button onClick={() => onEdit(booking.project.clientId)} className="button-secondary !text-[10px] !px-2.5 !py-1.5 inline-flex items-center gap-1"><PencilIcon className="w-3 h-3" /> Edit</button>
-                                <button onClick={() => onDelete(booking.project.id, booking.project.clientName)} className="button-secondary !text-[10px] !px-2.5 !py-1.5 !text-brand-danger !border-brand-danger hover:!bg-brand-danger/10 inline-flex items-center gap-1"><Trash2Icon className="w-3 h-3" /> Hapus</button>
+                                {onOpenWhatsapp && client && (
+                                    <button onClick={() => onOpenWhatsapp(booking.project, client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors text-[10px] font-bold text-white shadow-sm" title="WhatsApp">
+                                        <WhatsappIcon className="w-3.5 h-3.5" /> 
+                                        <span>WA</span>
+                                    </button>
+                                )}
+                                <button onClick={() => onEdit(booking.project.clientId)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Edit">
+                                    <PencilIcon className="w-3.5 h-3.5" />
+                                    <span>Edit</span>
+                                </button>
+                                <button onClick={() => onDelete(booking.project.id, booking.project.clientName)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Hapus">
+                                    <Trash2Icon className="w-3.5 h-3.5" />
+                                    <span>Hapus</span>
+                                </button>
                                 {isNewSection && onStatusChange && (
-                                    <button onClick={() => onStatusChange(booking.project.id, BookingStatus.TERKONFIRMASI)} className="button-primary !text-[10px] !px-2.5 !py-1.5">Konfirmasi</button>
+                                    <button onClick={() => onStatusChange(booking.project.id, BookingStatus.TERKONFIRMASI)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all text-[10px] font-bold shadow-sm">
+                                        <CheckCircleIcon className="w-3.5 h-3.5" />
+                                        <span>Konfirmasi</span>
+                                    </button>
                                 )}
                                 {!isNewSection && onViewDetail && (
-                                    <button onClick={() => onViewDetail(booking.project.clientId)} className="button-secondary !text-[10px] !px-2.5 !py-1.5">Detail</button>
+                                    <button onClick={() => onViewDetail(booking.project.clientId)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm">
+                                        <EyeIcon className="w-3.5 h-3.5" />
+                                        <span>Detail</span>
+                                    </button>
                                 )}
                             </div>
                         </div>
@@ -143,42 +159,54 @@ const BookingTable: React.FC<BookingTableProps> = ({
                                         {booking.project.dpProofUrl ? (
                                             <button
                                                 onClick={() => onViewProof?.(booking.project.dpProofUrl!)}
-                                                className="button-secondary !text-xs !px-3 !py-1.5"
+                                                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group"
+                                                title="Lihat Bukti Bayar"
                                             >
-                                                Lihat Bukti
+                                                <EyeIcon className="w-4 h-4" />
+                                                <span className="text-xs font-bold">Lihat Bukti</span>
                                             </button>
                                         ) : (
                                             <span className="text-brand-text-secondary">-</span>
                                         )}
                                     </td>
                                     <td className="px-4 py-3 text-center">
-                                        <div className="flex items-center justify-center gap-1">
-                                            <button onClick={() => onEdit(booking.project.clientId)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Edit Booking"><PencilIcon className="w-4 h-4" /></button>
-                                            <button onClick={() => onDelete(booking.project.id, booking.project.clientName)} className="p-2 text-brand-danger hover:bg-brand-danger/10 rounded-full" title="Hapus Booking"><Trash2Icon className="w-4 h-4" /></button>
+                                        <div className="flex items-center justify-center space-x-1.5">
+                                            <button onClick={() => onEdit(booking.project.clientId)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit Booking">
+                                                <PencilIcon className="w-4 h-4" />
+                                                <span className="text-xs font-bold">Edit</span>
+                                            </button>
+                                            <button onClick={() => onDelete(booking.project.id, booking.project.clientName)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus Booking">
+                                                <Trash2Icon className="w-4 h-4" />
+                                                <span className="text-xs font-bold">Hapus</span>
+                                            </button>
                                             {onOpenWhatsapp && client && (
                                                 <button
                                                     onClick={() => onOpenWhatsapp(booking.project, client)}
-                                                    className="button-secondary text-xs px-3 py-1.5 inline-flex items-center gap-1.5"
+                                                    className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all shadow-sm group"
                                                     title="Kirim Pesan WhatsApp"
                                                 >
                                                     <WhatsappIcon className="w-4 h-4" /> 
-                                                    <span className="hidden lg:inline">Chat</span>
+                                                    <span className="text-xs font-bold">Chat</span>
                                                 </button>
                                             )}
                                             {isNewSection && onStatusChange && (
                                                 <button
                                                     onClick={() => onStatusChange(booking.project.id, BookingStatus.TERKONFIRMASI)}
-                                                    className="button-primary !text-xs !px-3 !py-1.5"
+                                                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all shadow-sm group"
+                                                    title="Konfirmasi Booking"
                                                 >
-                                                    Konfirmasi
+                                                    <CheckCircleIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Konfirmasi</span>
                                                 </button>
                                             )}
                                             {!isNewSection && onViewDetail && (
                                                 <button
                                                     onClick={() => onViewDetail(booking.project.clientId)}
-                                                    className="button-secondary text-xs px-3 py-1.5"
+                                                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group"
+                                                    title="Lihat Detail Pengantin"
                                                 >
-                                                    Detail
+                                                    <EyeIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Detail</span>
                                                 </button>
                                             )}
                                         </div>

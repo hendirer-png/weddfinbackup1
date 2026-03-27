@@ -1,6 +1,7 @@
 import React from 'react';
 import { Package, AddOn, Project, Profile, REGIONS } from '@/types';
-import { PlusIcon, InfoIcon, Share2Icon, ChevronRightIcon } from '@/constants';
+import PageHeader from '@/layouts/PageHeader';
+import { PlusIcon, InfoIcon, Share2Icon, ChevronRightIcon, PackageIcon } from '@/constants';
 import { usePackages, emptyPackageForm, emptyAddOnForm, PackageForm, AddOnForm } from '@/features/packages/hooks/usePackages';
 import PackageCard from '@/features/packages/components/PackageCard';
 import AddOnSection from '@/features/packages/components/AddOnSection';
@@ -72,55 +73,52 @@ const Packages: React.FC<PackagesProps> = (props) => {
     return (
         <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header Section */}
-            <header className="space-y-6">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 p-4 md:p-6 rounded-3xl border border-white/60 shadow-sm backdrop-blur-md">
-                    <div className="space-y-1">
-                        <h2 className="text-2xl md:text-3xl font-bold text-gradient flex items-center gap-3">
-                            Layanan & Portofolio
-                            <button onClick={() => setIsInfoModalOpen(true)} className="p-1.5 rounded-full hover:bg-brand-accent/10 text-brand-accent transition-colors">
-                                <InfoIcon className="w-5 h-5" />
-                            </button>
-                        </h2>
-                        <p className="text-sm text-brand-text-secondary font-medium">Kelola Package layanan dan portofolio pricelist Anda.</p>
+            <PageHeader
+                title="Katalog Produk & Layanan"
+                subtitle="Susun Package wedding terbaik, kelola tambahan jasa (Add-ons), dan update portofolio visual Anda."
+                icon={<PackageIcon className="w-6 h-6" />}
+            >
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    {/* Tab Switcher */}
+                    <div className="flex p-1 bg-white/10 rounded-xl border border-white/10 shrink-0">
+                        <button 
+                            onClick={() => { setActiveTab('packages'); window.location.hash = '#/packages'; }}
+                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${activeTab === 'packages' ? 'bg-white text-blue-600 shadow-lg' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                        >
+                            Paket & Add-on
+                        </button>
+                        <button 
+                            onClick={() => { setActiveTab('galleries'); window.location.hash = '#/gallery'; }}
+                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${activeTab === 'galleries' ? 'bg-white text-blue-600 shadow-lg' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                        >
+                            Portofolio
+                        </button>
                     </div>
-                    <div className="flex gap-2 h-fit">
-                        {activeTab === 'packages' && (
-                            <>
-                                <button onClick={() => setIsShareModalOpen(true)} className="button-secondary flex items-center gap-2 text-sm shadow-sm group">
-                                    <Share2Icon className="w-4 h-4 group-hover:scale-110 transition-transform" /> 
-                                    <span className="hidden sm:inline">Bagikan</span>
-                                </button>
-                                <button onClick={() => { setPackageEditMode('new'); setPackageFormData(emptyPackageForm); }} className="button-primary flex items-center gap-2 text-sm shadow-lg group">
-                                    <PlusIcon className="w-4 h-4 group-hover:rotate-90 transition-transform" /> 
-                                    Tambah Package
-                                </button>
-                            </>
-                        )}
-                    </div>
-                </div>
 
-                {/* Tab Navigation */}
-                <div className="flex p-1.5 bg-brand-surface/60 backdrop-blur-md rounded-2xl border border-brand-border/40 w-fit">
-                    <button
-                        onClick={() => { setActiveTab('packages'); window.location.hash = '#/packages'; }}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'packages' ? 'bg-brand-accent text-white shadow-lg' : 'text-brand-text-secondary hover:text-brand-accent hover:bg-brand-accent/5'}`}
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={() => setIsInfoModalOpen(true)} 
+                            className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                        >
+                            Info
+                        </button>
+                        <button 
+                            onClick={() => setIsShareModalOpen(true)} 
+                            className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                        >
+                            Bagikan
+                        </button>
+                    </div>
+
+                    <button 
+                        onClick={() => { setPackageEditMode('new'); setPackageFormData(emptyPackageForm); }}
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all text-xs sm:text-sm font-black shadow-lg shadow-blue-900/40"
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                        Layanan & Package
-                    </button>
-                    <button
-                        onClick={() => { setActiveTab('galleries'); window.location.hash = '#/gallery'; }}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'galleries' ? 'bg-brand-accent text-white shadow-lg' : 'text-brand-text-secondary hover:text-brand-accent hover:bg-brand-accent/5'}`}
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        Portofolio (Pricelist)
+                        <PlusIcon className="w-5 h-5" />
+                        <span>Tambah Paket</span>
                     </button>
                 </div>
-            </header>
+            </PageHeader>
 
             {/* Main Content Grid */}
             {activeTab === 'packages' ? (

@@ -118,10 +118,17 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
 
     return (
         <div className="space-y-6">
-            <PageHeader title="Voucher" subtitle="Buat dan kelola kode diskon untuk pengantin Anda." icon={<PackageIcon className="w-6 h-6" />}>
-                <button onClick={() => handleOpenModal('add')} className="button-primary inline-flex items-center gap-2">
+            <PageHeader 
+                title="Kode Promo & Diskon" 
+                subtitle="Buat penawaran terbatas dan kode voucher untuk menarik minat calon pengantin." 
+                icon={<PackageIcon className="w-6 h-6" />}
+            >
+                <button 
+                    onClick={() => handleOpenModal('add')} 
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all text-xs sm:text-sm font-black shadow-lg shadow-blue-900/40"
+                >
                     <PlusIcon className="w-5 h-5" />
-                    Buat Kode Baru
+                    <span>Buat Kode Promo</span>
                 </button>
             </PageHeader>
 
@@ -156,9 +163,15 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                                     <td className="px-4 py-3">{code.usageCount} / {code.maxUsage ?? '∞'}</td>
                                     <td className="px-4 py-3">{code.expiryDate ? new Date(code.expiryDate).toLocaleDateString('id-ID') : 'Tidak ada'}</td>
                                     <td className="px-4 py-3">
-                                        <div className="flex items-center justify-center space-x-1">
-                                            <button onClick={() => handleOpenModal('edit', code)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Edit"><PencilIcon className="w-5 h-5" /></button>
-                                            <button onClick={() => handleDelete(code.id)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Hapus"><Trash2Icon className="w-5 h-5" /></button>
+                                        <div className="flex items-center justify-center space-x-1.5">
+                                            <button onClick={() => handleOpenModal('edit', code)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                                                <PencilIcon className="w-4 h-4" />
+                                                <span className="text-xs font-bold">Edit</span>
+                                            </button>
+                                            <button onClick={() => handleDelete(code.id)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                                                <Trash2Icon className="w-4 h-4" />
+                                                <span className="text-xs font-bold">Hapus</span>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -228,19 +241,19 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                                 <div className="grid grid-cols-2 gap-2">
                                     <button
                                         onClick={() => handleOpenModal('edit', code)}
-                                        className="flex items-center justify-center gap-2 p-2 text-brand-text-secondary hover:text-blue-400 hover:bg-brand-input rounded-lg transition-colors"
+                                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-sm font-bold shadow-sm"
                                         title="Edit"
                                     >
-                                        <PencilIcon className="w-5 h-5" />
-                                        <span className="text-sm font-medium">Edit</span>
+                                        <PencilIcon className="w-4 h-4" />
+                                        <span>Edit</span>
                                     </button>
                                     <button
                                         onClick={() => handleDelete(code.id)}
-                                        className="flex items-center justify-center gap-2 p-2 text-brand-text-secondary hover:text-red-400 hover:bg-brand-input rounded-lg transition-colors"
+                                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-sm font-bold shadow-sm"
                                         title="Hapus"
                                     >
-                                        <Trash2Icon className="w-5 h-5" />
-                                        <span className="text-sm font-medium">Hapus</span>
+                                        <Trash2Icon className="w-4 h-4" />
+                                        <span>Hapus</span>
                                     </button>
                                 </div>
                             </div>
@@ -249,9 +262,9 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                 )}
             </div>
 
-            <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={modalMode === 'add' ? 'Buat Kode Voucher Baru' : 'Edit Kode Voucher'} size="2xl">
+            <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={modalMode === 'add' ? 'Buat Kode promo Baru' : 'Edit Kode promo'} size="2xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <CollapsibleSection title="Detail Identitas Voucher" defaultExpanded={true} variant="filled" icon={<PackageIcon className="w-4 h-4" />}>
+                    <CollapsibleSection title="Detail Identitas promo" defaultExpanded={true} variant="filled" icon={<PackageIcon className="w-4 h-4" />}>
                         <div className="space-y-4">
                             <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4">
                                 <p className="text-[10px] text-blue-600 font-black uppercase tracking-widest leading-relaxed">
@@ -260,7 +273,7 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                             </div>
 
                             <div className="input-group">
-                                <label className="text-[10px] uppercase font-black tracking-widest text-brand-text-secondary mb-1 block">Kode Voucher (Kapital)</label>
+                                <label className="text-[10px] uppercase font-black tracking-widest text-brand-text-secondary mb-1 block">Kode promo (Kapital)</label>
                                 <input
                                     type="text"
                                     name="code"
@@ -282,8 +295,8 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                                     className="w-5 h-5 rounded-lg text-blue-600 focus:ring-blue-500/20 transition-all cursor-pointer"
                                 />
                                 <div>
-                                    <label htmlFor="isActive" className="text-xs font-black text-brand-text-light cursor-pointer block uppercase tracking-wide">Status Aktif Voucher</label>
-                                    <p className="text-[10px] text-brand-text-secondary">Hanya voucher aktif yang dapat digunakan pada transaksi.</p>
+                                    <label htmlFor="isActive" className="text-xs font-black text-brand-text-light cursor-pointer block uppercase tracking-wide">Status Aktif promo</label>
+                                    <p className="text-[10px] text-brand-text-secondary">Hanya promo aktif yang dapat digunakan pada transaksi.</p>
                                 </div>
                             </div>
                         </div>
@@ -356,7 +369,7 @@ const PromoCodes: React.FC<PromoCodesProps> = ({ promoCodes, setPromoCodes, proj
                     <div className="flex justify-end gap-3 pt-6 border-t border-brand-border">
                         <button type="button" onClick={handleCloseModal} className="px-8 py-3 rounded-xl font-bold text-brand-text-secondary hover:bg-brand-bg transition-colors">Batal</button>
                         <button type="submit" className="px-10 py-3 rounded-xl font-black text-white bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-500/20 transition-all active:scale-95">
-                            {modalMode === 'add' ? 'Simpan Voucher' : 'Update Voucher'}
+                            {modalMode === 'add' ? 'Simpan promo' : 'Update promo'}
                         </button>
                     </div>
                 </form>

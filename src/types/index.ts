@@ -51,7 +51,7 @@ export enum ViewType {
   DASHBOARD = 'Dashboard',
   "Calon Pengantin" = 'Calon Pengantin',
   BOOKING = 'Booking',
-  CLIENTS = 'Manajemen Klien',
+  CLIENTS = 'Pengelola Pengantin',
   PROJECTS = 'Proyek',
   TEAM = 'Tim / Vendor',
   FINANCE = 'Keuangan',

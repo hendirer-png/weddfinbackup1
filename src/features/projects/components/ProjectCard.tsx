@@ -174,27 +174,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
                 <div className="flex flex-wrap gap-2 mt-4">
                     <button
                         onClick={() => onSendMessage(project)}
-                        className="flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-input hover:bg-green-600 hover:text-white text-brand-text-primary text-sm font-semibold transition-all"
+                        className="flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-input hover:bg-green-600 hover:text-white text-brand-text-primary text-sm font-semibold transition-all group shadow-sm"
                         title="Chat Pengantin via WA"
                     >
                         <WhatsappIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
-                        <span className="hidden sm:inline">WhatsApp</span>
+                        <span className="font-bold">WhatsApp</span>
                     </button>
 
                     <button
                         onClick={() => onEdit(project)}
-                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-input hover:bg-brand-accent hover:text-white text-brand-text-primary text-sm font-semibold transition-all"
+                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-input hover:bg-brand-accent hover:text-white text-brand-text-primary text-sm font-semibold transition-all group shadow-sm"
                         title="Edit Acara Pernikahan"
                     >
                         <PencilIcon className="w-4 h-4" />
+                        <span className="font-bold">Edit</span>
                     </button>
 
                     <button
                         onClick={() => onViewDetails(project)}
-                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-accent text-white text-sm font-semibold transition-all hover:bg-brand-accent-hover"
+                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand-accent text-white text-sm font-semibold transition-all hover:bg-brand-accent-hover shadow-lg shadow-brand-accent/20"
                         title="Lihat Detail"
                     >
                         <EyeIcon className="w-4 h-4" />
+                        <span className="font-bold">Detail</span>
                     </button>
                 </div>
             </div>

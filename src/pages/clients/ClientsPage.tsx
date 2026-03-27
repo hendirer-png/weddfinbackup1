@@ -1,5 +1,5 @@
 import React from 'react';
-import { Client, Project, Package, Transaction, Profile, Card, ViewType, NavigationAction, PromoCode, FinancialPocket, ClientFeedback } from '@/types';
+import { Client, Project, Package, Transaction, Profile, Card, ViewType, NavigationAction, PromoCode, FinancialPocket, ClientFeedback, Contract } from '@/types';
 import { ClientsPage as ClientsPageFeature } from '@/features/clients/components/ClientsPage';
 
 interface ClientsProps {
@@ -28,6 +28,12 @@ interface ClientsProps {
     onSignTransaction: (tId: string, sig: string) => void;
     onRecordPayment: (projectId: string, amount: number, destinationCardId: string) => void;
     addNotification: (notif: any) => void;
+    teamMembers: any[];
+    teamProjectPayments: any[];
+    setTeamProjectPayments: React.Dispatch<React.SetStateAction<any[]>>;
+    contracts: Contract[];
+    setContracts: React.Dispatch<React.SetStateAction<Contract[]>>;
+    onSignContract: (contractId: string, signatureDataUrl: string, signer: 'vendor' | 'client') => void;
 }
 
 const ClientsPage: React.FC<ClientsProps> = (props) => {

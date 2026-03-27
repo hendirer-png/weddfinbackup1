@@ -44,10 +44,19 @@ export const ClientInactiveList: React.FC<ClientInactiveListProps> = ({
                                     <span className="text-brand-text-secondary text-[10px]">Kontak Terakhir</span>
                                     <span className="text-right text-xs">{new Date(client.lastContact).toLocaleDateString('id-ID')}</span>
                                 </div>
-                                <div className="mt-2 pt-2 border-t border-brand-border/50 flex justify-end gap-1.5">
-                                    <button onClick={() => onViewDetail(client)} className="button-secondary !text-[10px] !px-2 !py-1.5" title="Detail"><EyeIcon className="w-3 h-3" /></button>
-                                    <button onClick={() => onEditClient(client)} className="button-secondary !text-[10px] !px-2 !py-1.5" title="Edit"><PencilIcon className="w-3 h-3" /></button>
-                                    <button onClick={() => onDeleteClient(client.id)} className="button-secondary !text-[10px] !px-2 !py-1.5 !text-brand-danger !border-brand-danger hover:!bg-brand-danger/10" title="Hapus"><Trash2Icon className="w-3 h-3" /></button>
+                                <div className="mt-2 pt-2 border-t border-brand-border/50 flex flex-wrap justify-end gap-1.5">
+                                    <button onClick={() => onViewDetail(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Detail">
+                                        <EyeIcon className="w-3.5 h-3.5" />
+                                        <span>Detail</span>
+                                    </button>
+                                    <button onClick={() => onEditClient(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Edit">
+                                        <PencilIcon className="w-3.5 h-3.5" />
+                                        <span>Edit</span>
+                                    </button>
+                                    <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Hapus">
+                                        <Trash2Icon className="w-3.5 h-3.5" />
+                                        <span>Hapus</span>
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -76,10 +85,19 @@ export const ClientInactiveList: React.FC<ClientInactiveListProps> = ({
                                         <td className="px-6 py-4"><span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-700 text-gray-300">{client.status}</span></td>
                                         <td className="px-6 py-4">{new Date(client.lastContact).toLocaleDateString('id-ID')}</td>
                                         <td className="px-6 py-4 text-center">
-                                            <div className="flex items-center justify-center space-x-1">
-                                                <button onClick={() => onViewDetail(client)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Detail"><EyeIcon className="w-5 h-5" /></button>
-                                                <button onClick={() => onEditClient(client)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Edit"><PencilIcon className="w-5 h-5" /></button>
-                                                <button onClick={() => onDeleteClient(client.id)} className="p-2 text-brand-danger hover:bg-brand-danger/10 rounded-full" title="Hapus"><Trash2Icon className="w-5 h-5" /></button>
+                                            <div className="flex items-center justify-center space-x-2">
+                                                <button onClick={() => onViewDetail(client)} className="inline-flex items-center space-x-2 px-3 h-8 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Detail">
+                                                    <EyeIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Detail</span>
+                                                </button>
+                                                <button onClick={() => onEditClient(client)} className="inline-flex items-center space-x-2 px-3 h-8 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                                                    <PencilIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Edit</span>
+                                                </button>
+                                                <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center space-x-2 px-3 h-8 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                                                    <Trash2Icon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Hapus</span>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

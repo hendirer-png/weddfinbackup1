@@ -1046,25 +1046,60 @@ export const Freelancers: React.FC<FreelancersProps> = ({
 
     return (
         <div className="space-y-6">
-            <PageHeader title="Manajemen Tim / Vendor" subtitle="Kelola semua data Tim / Vendor, Acara Pernikahan, dan pembayaran." icon={<UsersIcon className="w-6 h-6" />}>
-                <div className="flex flex-col sm:flex-row w-full sm:w-auto items-stretch sm:items-center gap-2 sm:gap-3 mt-4 sm:mt-0">
-                    <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-hidden">
-                        <CalendarIcon className="w-4 h-4 text-brand-text-secondary flex-shrink-0" />
-                        <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="input-field !rounded-lg !border !bg-brand-bg p-2 text-sm w-full sm:w-36" title="Dari tanggal" />
-                    </div>
-                    <span className="text-brand-text-secondary text-sm hidden sm:inline">–</span>
-                    <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="input-field !rounded-lg !border !bg-brand-bg p-2 text-sm w-full sm:w-36" title="Sampai tanggal" />
-                    <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-sm text-brand-text-secondary hover:text-brand-text-primary mt-1 sm:mt-0 w-full sm:w-auto text-center">Reset</button>
-                    <button onClick={() => setIsInfoModalOpen(true)} className="button-secondary justify-center text-xs sm:text-sm py-2">Pelajari Halaman Ini</button>
-                    <button onClick={handleDownloadTeam} className="button-secondary inline-flex items-center justify-center gap-2 text-xs sm:text-sm py-2">
-                        <DownloadIcon className="w-4 h-4" /> Unduh Data
+            <PageHeader 
+                title="Manajemen Tim / Vendor" 
+                subtitle="Kelola database tim internal, vendor pihak ketiga, koordinasi pengantin, dan riwayat pembayaran mereka." 
+                icon={<UsersIcon className="w-6 h-6" />}
+            >
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-6 sm:mt-0">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 order-2 sm:order-none w-full sm:w-auto">
+                    <CalendarIcon className="w-4 h-4 text-white/50" />
+                    <input 
+                        type="date" 
+                        value={dateFrom} 
+                        onChange={e => setDateFrom(e.target.value)} 
+                        className="bg-transparent border-none text-white text-xs outline-none focus:ring-0 p-0 w-28" 
+                        title="Dari Tanggal" 
+                    />
+                    <span className="text-white/30">–</span>
+                    <input 
+                        type="date" 
+                        value={dateTo} 
+                        onChange={e => setDateTo(e.target.value)} 
+                        className="bg-transparent border-none text-white text-xs outline-none focus:ring-0 p-0 w-28" 
+                        title="Sampai Tanggal" 
+                    />
+                    {(dateFrom || dateTo) && (
+                        <button onClick={() => { setDateFrom(''); setDateTo(''); }} className="text-white/50 hover:text-white ml-1 text-xs px-2 py-0.5 rounded-lg bg-white/10">Reset</button>
+                    )}
+                </div>
+
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto order-1 sm:order-none">
+                    <button 
+                        onClick={() => setIsInfoModalOpen(true)} 
+                        className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                    >
+                        Pelajari
                     </button>
-                    <button onClick={() => handleOpenForm('add')} className="button-primary inline-flex items-center justify-center gap-2 text-xs sm:text-sm py-2">
-                        <PlusIcon className="w-5 h-5" />
-                        Tambah Tim / Vendor
+
+                    <button 
+                        onClick={handleDownloadTeam} 
+                        className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-500/20 text-white border border-white/20 hover:bg-white/20 transition-all text-xs font-bold"
+                    >
+                        <DownloadIcon className="w-4 h-4" />
+                        <span>Export CSV</span>
                     </button>
                 </div>
-            </PageHeader>
+
+                <button 
+                    onClick={() => handleOpenForm('add')} 
+                    className="order-first sm:order-none w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all text-xs sm:text-sm font-black shadow-lg shadow-blue-900/40"
+                >
+                    <PlusIcon className="w-5 h-5" />
+                    <span>Tambah Tim / Vendor</span>
+                </button>
+            </div>
+        </PageHeader>
 
             <div className="space-y-8">
                 <div className="space-y-4">
@@ -1137,11 +1172,20 @@ export const Freelancers: React.FC<FreelancersProps> = ({
                                             <span className="text-brand-text-secondary">Fee Belum Dibayar</span>
                                             <span className="text-right font-semibold text-red-400">{formatCurrency(unpaidFee)}</span>
                                         </div>
-                                        <div className="mt-3 flex justify-end gap-2">
-                                            <button onClick={() => handleViewDetails(member)} className="button-secondary !text-xs !px-3 !py-2">Detail</button>
-                                            <button onClick={() => handleOpenForm('edit', member)} className="button-secondary !text-xs !px-3 !py-2">Edit</button>
-                                            <button onClick={() => handleDelete(member.id)} className="button-secondary !text-xs !px-3 !py-2">Hapus</button>
-                                        </div>
+                                        <div className="mt-4 flex flex-wrap justify-end gap-2">
+                                            <button onClick={() => handleViewDetails(member)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <EyeIcon className="w-4 h-4" />
+                                                <span>Detail</span>
+                                            </button>
+                                            <button onClick={() => handleOpenForm('edit', member)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <PencilIcon className="w-4 h-4" />
+                                                <span>Edit</span>
+                                            </button>
+                                            <button onClick={() => handleDelete(member.id)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <Trash2Icon className="w-4 h-4" />
+                                                <span>Hapus</span>
+                                            </button>
+                                         </div>
                                     </div>
                                 );
                             })}
@@ -1166,10 +1210,19 @@ export const Freelancers: React.FC<FreelancersProps> = ({
                                                 <td className="px-4 py-3 font-semibold text-red-400">{formatCurrency(unpaidFee)}</td>
                                                 <td className="px-4 py-3"><div className="flex justify-center items-center gap-1"><StarIcon className="w-4 h-4 text-yellow-400 fill-current" />{member.rating.toFixed(1)}</div></td>
                                                 <td className="px-4 py-3">
-                                                    <div className="flex items-center justify-center space-x-1">
-                                                        <button onClick={() => handleViewDetails(member)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Detail"><EyeIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleOpenForm('edit', member)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Edit"><PencilIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleDelete(member.id)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Hapus"><Trash2Icon className="w-5 h-5" /></button>
+                                                    <div className="flex items-center justify-center space-x-1.5">
+                                                        <button onClick={() => handleViewDetails(member)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Detail">
+                                                            <EyeIcon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Detail</span>
+                                                        </button>
+                                                        <button onClick={() => handleOpenForm('edit', member)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                                                            <PencilIcon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Edit</span>
+                                                        </button>
+                                                        <button onClick={() => handleDelete(member.id)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                                                            <Trash2Icon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Hapus</span>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1251,11 +1304,20 @@ export const Freelancers: React.FC<FreelancersProps> = ({
                                             <span className="text-brand-text-secondary">Fee Belum Dibayar</span>
                                             <span className="text-right font-semibold text-red-400">{formatCurrency(unpaidFee)}</span>
                                         </div>
-                                        <div className="mt-3 flex justify-end gap-2">
-                                            <button onClick={() => handleViewDetails(member)} className="button-secondary !text-xs !px-3 !py-2">Detail</button>
-                                            <button onClick={() => handleOpenForm('edit', member)} className="button-secondary !text-xs !px-3 !py-2">Edit</button>
-                                            <button onClick={() => handleDelete(member.id)} className="button-secondary !text-xs !px-3 !py-2">Hapus</button>
-                                        </div>
+                                        <div className="mt-4 flex flex-wrap justify-end gap-2">
+                                            <button onClick={() => handleViewDetails(member)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <EyeIcon className="w-4 h-4" />
+                                                <span>Detail</span>
+                                            </button>
+                                            <button onClick={() => handleOpenForm('edit', member)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <PencilIcon className="w-4 h-4" />
+                                                <span>Edit</span>
+                                            </button>
+                                            <button onClick={() => handleDelete(member.id)} className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-xs font-bold shadow-sm group">
+                                                <Trash2Icon className="w-4 h-4" />
+                                                <span>Hapus</span>
+                                            </button>
+                                         </div>
                                     </div>
                                 );
                             })}
@@ -1280,10 +1342,19 @@ export const Freelancers: React.FC<FreelancersProps> = ({
                                                 <td className="px-4 py-3 font-semibold text-red-400">{formatCurrency(unpaidFee)}</td>
                                                 <td className="px-4 py-3"><div className="flex justify-center items-center gap-1"><StarIcon className="w-4 h-4 text-yellow-400 fill-current" />{member.rating.toFixed(1)}</div></td>
                                                 <td className="px-4 py-3">
-                                                    <div className="flex items-center justify-center space-x-1">
-                                                        <button onClick={() => handleViewDetails(member)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Detail"><EyeIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleOpenForm('edit', member)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Edit"><PencilIcon className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleDelete(member.id)} className="p-2 text-brand-text-secondary hover:bg-brand-input rounded-full" title="Hapus"><Trash2Icon className="w-5 h-5" /></button>
+                                                    <div className="flex items-center justify-center space-x-1.5">
+                                                        <button onClick={() => handleViewDetails(member)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Detail">
+                                                            <EyeIcon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Detail</span>
+                                                        </button>
+                                                        <button onClick={() => handleOpenForm('edit', member)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                                                            <PencilIcon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Edit</span>
+                                                        </button>
+                                                        <button onClick={() => handleDelete(member.id)} className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                                                            <Trash2Icon className="w-4 h-4" />
+                                                            <span className="text-xs font-bold">Hapus</span>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>

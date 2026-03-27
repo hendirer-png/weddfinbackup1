@@ -35,6 +35,7 @@ import { listProjectsWithRelations, normalizeProject } from "@/services/projects
 import { normalizeClient } from "@/services/clients";
 import { normalizeTransaction } from "@/services/transactions";
 import { normalizeLead } from "@/services/leads";
+import { listPromoCodes } from "@/services/promoCodes";
 
 interface AppContextType {
   // Auth
@@ -347,6 +348,12 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
         const remoteLeads = await listLeadsFromDb();
         if (isMounted) setLeads(Array.isArray(remoteLeads) ? remoteLeads : []);
       } catch (e) { console.warn("[Supabase] Failed to fetch leads.", e); }
+
+      // Promo Codes
+      try {
+        const remotePromos = await listPromoCodes();
+        if (isMounted) setPromoCodes(Array.isArray(remotePromos) ? remotePromos : []);
+      } catch (e) { console.warn("[Supabase] Failed to fetch promo codes.", e); }
     };
 
     fetchInitialData();
@@ -382,6 +389,15 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
       supabase.removeChannel(leadChannel);
     };
   }, [mapCardRowToCard]);
+
+  // Realtime for Promo Codes
+  useEffect(() => {
+    const channel = supabase.channel("realtime-promo-codes").on("postgres_changes", { event: "*", schema: "public", table: "promo_codes" }, async (payload) => {
+      const updatedPromos = await listPromoCodes();
+      setPromoCodes(updatedPromos);
+    }).subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   // Pre-load critical data when authenticated
   useEffect(() => {

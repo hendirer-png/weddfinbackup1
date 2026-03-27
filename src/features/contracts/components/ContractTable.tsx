@@ -52,15 +52,18 @@ export const ContractTable: React.FC<ContractTableProps> = ({
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="flex items-center justify-center space-x-1">
-                                            <button onClick={() => onView(contract)} className="p-2 text-brand-text-secondary hover:text-brand-accent hover:bg-brand-accent/10 rounded-lg transition-colors" title="Lihat">
-                                                <EyeIcon className="w-5 h-5"/>
+                                        <div className="flex items-center justify-center space-x-2">
+                                            <button onClick={() => onView(contract)} className="inline-flex items-center space-x-2 px-3 py-1.5 text-brand-text-secondary hover:text-brand-accent hover:bg-brand-accent/10 rounded-lg transition-all group" title="Lihat">
+                                                <EyeIcon className="w-4 h-4"/>
+                                                <span className="text-xs font-bold font-sans">Lihat</span>
                                             </button>
-                                            <button onClick={() => onEdit(contract)} className="p-2 text-brand-text-secondary hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors" title="Edit">
-                                                <PencilIcon className="w-5 h-5"/>
+                                            <button onClick={() => onEdit(contract)} className="inline-flex items-center space-x-2 px-3 py-1.5 text-brand-text-secondary hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all group" title="Edit">
+                                                <PencilIcon className="w-4 h-4"/>
+                                                <span className="text-xs font-bold font-sans">Edit</span>
                                             </button>
-                                            <button onClick={() => onDelete(contract.id)} className="p-2 text-brand-text-secondary hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Hapus">
-                                                <Trash2Icon className="w-5 h-5"/>
+                                            <button onClick={() => onDelete(contract.id)} className="inline-flex items-center space-x-2 px-3 py-1.5 text-brand-text-secondary hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all group" title="Hapus">
+                                                <Trash2Icon className="w-4 h-4"/>
+                                                <span className="text-xs font-bold font-sans">Hapus</span>
                                             </button>
                                         </div>
                                     </td>

@@ -10,6 +10,7 @@ interface ClientActiveListProps {
     onEditClient: (client: ExtendedClient) => void;
     onDeleteClient: (clientId: string) => void;
     onAddProject: (client: ExtendedClient) => void;
+    onManageProjects: (client: ExtendedClient) => void;
 }
 
 export const ClientActiveList: React.FC<ClientActiveListProps> = ({
@@ -17,7 +18,8 @@ export const ClientActiveList: React.FC<ClientActiveListProps> = ({
     onViewDetail,
     onEditClient,
     onDeleteClient,
-    onAddProject
+    onAddProject,
+    onManageProjects
 }) => {
     const [isOpen, setIsOpen] = useState(true);
     const activeClients = clients.filter(c => c.status === ClientStatus.ACTIVE);
@@ -55,11 +57,29 @@ export const ClientActiveList: React.FC<ClientActiveListProps> = ({
                                     <span className="text-brand-text-secondary text-[10px]">Acara Pernikahan Terbaru</span>
                                     <span className="text-right text-xs truncate">{client.mostRecentProject?.projectName || '-'}</span>
                                 </div>
-                                <div className="mt-2 pt-2 border-t border-brand-border/50 flex justify-end gap-1.5">
-                                    <button onClick={() => onViewDetail(client)} className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Detail"><EyeIcon className="w-3 h-3 text-white" /></button>
-                                    <button onClick={() => onEditClient(client)} className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Edit"><PencilIcon className="w-3 h-3 text-white" /></button>
-                                    <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-red-600 hover:bg-red-700 transition-colors" title="Hapus"><Trash2Icon className="w-3 h-3 text-white" /></button>
-                                    <button onClick={() => onAddProject(client)} className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Tambah Acara"><PlusIcon className="w-3 h-3 text-white" /></button>
+                                <div className="mt-2 pt-2 border-t border-brand-border/50 flex flex-wrap justify-end gap-1.5">
+                                    <button onClick={() => onViewDetail(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Detail">
+                                        <EyeIcon className="w-3.5 h-3.5" />
+                                        <span>Detail</span>
+                                    </button>
+                                    <button onClick={() => onEditClient(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Edit">
+                                        <PencilIcon className="w-3.5 h-3.5" />
+                                        <span>Edit</span>
+                                    </button>
+                                    <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Hapus">
+                                        <Trash2Icon className="w-3.5 h-3.5" />
+                                        <span>Hapus</span>
+                                    </button>
+                                    <button onClick={() => onAddProject(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold shadow-sm" title="Tambah Acara">
+                                        <PlusIcon className="w-3.5 h-3.5" />
+                                        <span>+ Acara</span>
+                                    </button>
+                                    <button onClick={() => onManageProjects(client)} className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all text-[10px] font-bold shadow-sm whitespace-nowrap" title="Kelola Acara">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                        </svg>
+                                        <span>Kelola Acara</span>
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -97,11 +117,29 @@ export const ClientActiveList: React.FC<ClientActiveListProps> = ({
                                             )}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center justify-center space-x-1">
-                                                <button onClick={() => onViewDetail(client)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Detail"><EyeIcon className="w-5 h-5 text-white" /></button>
-                                                <button onClick={() => onEditClient(client)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Edit"><PencilIcon className="w-5 h-5 text-white" /></button>
-                                                <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-600 hover:bg-red-700 transition-colors" title="Hapus"><Trash2Icon className="w-5 h-5 text-white" /></button>
-                                                <button onClick={() => onAddProject(client)} className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors" title="Tambah Acara"><PlusIcon className="w-5 h-5 text-white" /></button>
+                                            <div className="flex items-center justify-center space-x-2">
+                                                <button onClick={() => onViewDetail(client)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Detail">
+                                                    <EyeIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Detail</span>
+                                                </button>
+                                                <button onClick={() => onEditClient(client)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Edit">
+                                                    <PencilIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Edit</span>
+                                                </button>
+                                                <button onClick={() => onDeleteClient(client.id)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition-all shadow-sm group" title="Hapus">
+                                                    <Trash2Icon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Hapus</span>
+                                                </button>
+                                                <button onClick={() => onAddProject(client)} className="inline-flex items-center space-x-2 px-3 h-9 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm group" title="Tambah Acara">
+                                                    <PlusIcon className="w-4 h-4" />
+                                                    <span className="text-xs font-bold">Tambah Acara</span>
+                                                </button>
+                                                <button onClick={() => onManageProjects(client)} className="inline-flex items-center space-x-2 px-4 h-9 rounded-lg bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white transition-all shadow-sm group" title="Kelola Acara">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                                    </svg>
+                                                    <span className="text-xs font-bold whitespace-nowrap">Kelola Acara</span>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

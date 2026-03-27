@@ -48,10 +48,18 @@ export const LeadsPage: React.FC<LeadsPageProps> = (props) => {
             ) : (
                 <>
                     <PageHeader
-                        title="Calon Pengantin 💍"
-                        subtitle="Kelola calon pengantin Anda dari kontak pertama hingga menjadi Acara Pernikahan."
+                        title="Database Calon Pengantin"
+                        subtitle="Kelola prospek calon pengantin, track interaksi awal, dan konversi mereka menjadi Client utama Anda."
                         icon={<LightbulbIcon className="w-6 h-6" />}
-                    />
+                    >
+                        <button 
+                            onClick={() => handleOpenModal('add')} 
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all text-xs sm:text-sm font-black shadow-lg shadow-blue-900/40"
+                        >
+                            <PlusIcon className="w-5 h-5" />
+                            <span>Tambah Calon Pengantin</span>
+                        </button>
+                    </PageHeader>
 
                     <LeadsAnalytics leads={leads} totals={totals} onStatCardClick={handleStatCardClick} />
 

@@ -7,6 +7,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { updateProject as updateProjectInDb } from "@/services/projects";
 import { createTransaction, updateCardBalance, updateTransaction as updateTransactionInDb } from "@/services/transactions";
 import { markSubStatusConfirmed } from "@/services/projectSubStatusConfirmations";
+import { updateContract as updateContractInDb } from "@/services/contracts";
 
 // Lazy-load route components
 const Homepage = lazy(() => import("@/pages/home/Homepage"));
@@ -132,6 +133,7 @@ export const AppRoutes: React.FC = () => {
             [ViewType.HOMEPAGE]: "home",
             [ViewType.DASHBOARD]: "dashboard",
             [ViewType.CLIENTS]: "clients",
+            [ViewType.PROJECTS]: "clients",
         };
         const newPath = pathMap[view] || view.toLowerCase().replace(/ /g, "-");
         window.location.hash = `#/${newPath}`;
@@ -175,6 +177,7 @@ export const AppRoutes: React.FC = () => {
                             setInitialAction={setInitialAction} cards={cards} setCards={setCards} pockets={pockets}
                             setPockets={setPockets} handleNavigation={handleNavigation} clientFeedback={clientFeedback}
                             promoCodes={promoCodes} setPromoCodes={setPromoCodes} totals={appData.totals}
+                            teamMembers={teamMembers} teamProjectPayments={teamProjectPayments} setTeamProjectPayments={setTeamProjectPayments}
                             onSignInvoice={async (pId, sig) => {
                                 setProjects(prev => prev.map(p => p.id === pId ? { ...p, invoiceSignature: sig } : p));
                                 await updateProjectInDb(pId, { invoiceSignature: sig } as any);
@@ -203,13 +206,69 @@ export const AppRoutes: React.FC = () => {
                                 } catch (e) { showNotification("Gagal mencatat pembayaran."); }
                             }}
                             addNotification={addNotification}
+                            contracts={contracts}
+                            setContracts={setContracts}
+                            onSignContract={async (contractId: string, sig: string, signer: 'vendor' | 'client') => {
+                                try {
+                                    const field = signer === 'vendor' ? 'vendorSignature' : 'clientSignature';
+                                    setContracts(prev => prev.map(c => c.id === contractId ? { ...c, [field]: sig } : c));
+                                    await updateContractInDb(contractId, { [field]: sig } as any);
+                                    showNotification("Tanda tangan kontrak berhasil disimpan.");
+                                } catch (e) { showNotification("Gagal menyimpan tanda tangan kontrak."); }
+                            }}
                         />
                     </DataLoadingWrapper>
                 );
             case ViewType.PROJECTS:
                 return (
-                    <DataLoadingWrapper loading={appData.loading.projects} loaded={appData.loaded.projects} loadingMessage="Memuat data proyek..." onRetry={appData.loadProjects}>
-                        <Projects projects={projects} setProjects={setProjects} clients={clients} packages={packages} teamMembers={teamMembers} teamProjectPayments={teamProjectPayments} setTeamProjectPayments={setTeamProjectPayments} transactions={transactions} setTransactions={setTransactions} initialAction={initialAction} setInitialAction={setInitialAction} profile={profile} showNotification={showNotification} cards={cards} setCards={setCards} pockets={pockets} setPockets={setPockets} totals={appData.totals} />
+                    <DataLoadingWrapper loading={appData.loading.clients} loaded={appData.loaded.clients} loadingMessage="Memuat data klien..." onRetry={appData.loadClients}>
+                        <Clients 
+                            clients={clients} setClients={setClients} projects={projects} setProjects={setProjects}
+                            packages={packages} addOns={addOns} transactions={transactions} setTransactions={setTransactions}
+                            userProfile={profile} showNotification={showNotification} initialAction={initialAction}
+                            setInitialAction={setInitialAction} cards={cards} setCards={setCards} pockets={pockets}
+                            setPockets={setPockets} handleNavigation={handleNavigation} clientFeedback={clientFeedback}
+                            promoCodes={promoCodes} setPromoCodes={setPromoCodes} totals={appData.totals}
+                            teamMembers={teamMembers} teamProjectPayments={teamProjectPayments} setTeamProjectPayments={setTeamProjectPayments}
+                            onSignInvoice={async (pId, sig) => {
+                                setProjects(prev => prev.map(p => p.id === pId ? { ...p, invoiceSignature: sig } : p));
+                                await updateProjectInDb(pId, { invoiceSignature: sig } as any);
+                            }}
+                            onSignTransaction={async (tId, sig) => {
+                                setTransactions(prev => prev.map(t => t.id === tId ? { ...t, vendorSignature: sig } : t));
+                                await updateTransactionInDb(tId, { vendorSignature: sig } as any);
+                            }}
+                            onRecordPayment={async (projectId, amount, destinationCardId) => {
+                                try {
+                                    const today = new Date().toISOString().split("T")[0];
+                                    const proj = projects.find(p => p.id === projectId);
+                                    if (!proj) return;
+                                    const tx = await createTransaction({
+                                        date: today, description: `Pembayaran Acara Pernikahan ${proj.projectName}`,
+                                        amount, type: TransactionType.INCOME, projectId, category: "Pelunasan Acara Pernikahan",
+                                        method: "Transfer Bank", cardId: destinationCardId,
+                                    } as any);
+                                    if (destinationCardId) await updateCardBalance(destinationCardId, amount);
+                                    const newAmountPaid = (proj.amountPaid || 0) + amount;
+                                    const newStatus = newAmountPaid >= proj.totalCost ? PaymentStatus.LUNAS : PaymentStatus.DP_TERBAYAR;
+                                    setProjects(prev => prev.map(p => p.id === projectId ? { ...p, amountPaid: newAmountPaid, paymentStatus: newStatus } : p));
+                                    await updateProjectInDb(projectId, { amountPaid: newAmountPaid, paymentStatus: newStatus } as any);
+                                    setTransactions(prev => [tx, ...prev]);
+                                    showNotification("Pembayaran berhasil dicatat.");
+                                } catch (e) { showNotification("Gagal mencatat pembayaran."); }
+                            }}
+                            addNotification={addNotification}
+                            contracts={contracts}
+                            setContracts={setContracts}
+                            onSignContract={async (contractId: string, sig: string, signer: 'vendor' | 'client') => {
+                                try {
+                                    const field = signer === 'vendor' ? 'vendorSignature' : 'clientSignature';
+                                    setContracts(prev => prev.map(c => c.id === contractId ? { ...c, [field]: sig } : c));
+                                    await updateContractInDb(contractId, { [field]: sig } as any);
+                                    showNotification("Tanda tangan kontrak berhasil disimpan.");
+                                } catch (e) { showNotification("Gagal menyimpan tanda tangan kontrak."); }
+                            }}
+                        />
                     </DataLoadingWrapper>
                 );
             case ViewType.TEAM:
@@ -260,17 +319,52 @@ export const AppRoutes: React.FC = () => {
             case ViewType.CONTRACTS:
                 return (
                     <DataLoadingWrapper loading={appData.loading.contracts} loaded={appData.loaded.contracts} loadingMessage="Memuat data kontrak..." onRetry={appData.loadContracts}>
-                        <Contracts 
-                            contracts={contracts} 
+                        <Clients 
+                            clients={clients} setClients={setClients} projects={projects} setProjects={setProjects}
+                            packages={packages} addOns={addOns} transactions={transactions} setTransactions={setTransactions}
+                            userProfile={profile} showNotification={showNotification} initialAction={initialAction}
+                            setInitialAction={setInitialAction} cards={cards} setCards={setCards} pockets={pockets}
+                            setPockets={setPockets} handleNavigation={handleNavigation} clientFeedback={clientFeedback}
+                            promoCodes={promoCodes} setPromoCodes={setPromoCodes} totals={appData.totals}
+                            teamMembers={teamMembers} teamProjectPayments={teamProjectPayments} setTeamProjectPayments={setTeamProjectPayments}
+                            onSignInvoice={async (pId, sig) => {
+                                setProjects(prev => prev.map(p => p.id === pId ? { ...p, invoiceSignature: sig } : p));
+                                await updateProjectInDb(pId, { invoiceSignature: sig } as any);
+                            }}
+                            onSignTransaction={async (tId, sig) => {
+                                setTransactions(prev => prev.map(t => t.id === tId ? { ...t, vendorSignature: sig } : t));
+                                await updateTransactionInDb(tId, { vendorSignature: sig } as any);
+                            }}
+                            onRecordPayment={async (projectId, amount, destinationCardId) => {
+                                try {
+                                    const today = new Date().toISOString().split("T")[0];
+                                    const proj = projects.find(p => p.id === projectId);
+                                    if (!proj) return;
+                                    const tx = await createTransaction({
+                                        date: today, description: `Pembayaran Acara Pernikahan ${proj.projectName}`,
+                                        amount, type: TransactionType.INCOME, projectId, category: "Pelunasan Acara Pernikahan",
+                                        method: "Transfer Bank", cardId: destinationCardId,
+                                    } as any);
+                                    if (destinationCardId) await updateCardBalance(destinationCardId, amount);
+                                    const newAmountPaid = (proj.amountPaid || 0) + amount;
+                                    const newStatus = newAmountPaid >= proj.totalCost ? PaymentStatus.LUNAS : PaymentStatus.DP_TERBAYAR;
+                                    setProjects(prev => prev.map(p => p.id === projectId ? { ...p, amountPaid: newAmountPaid, paymentStatus: newStatus } : p));
+                                    await updateProjectInDb(projectId, { amountPaid: newAmountPaid, paymentStatus: newStatus } as any);
+                                    setTransactions(prev => [tx, ...prev]);
+                                    showNotification("Pembayaran berhasil dicatat.");
+                                } catch (e) { showNotification("Gagal mencatat pembayaran."); }
+                            }}
+                            addNotification={addNotification}
+                            contracts={contracts}
                             setContracts={setContracts}
-                            clients={clients} 
-                            projects={projects} 
-                            profile={profile}
-                            showNotification={showNotification}
-                            initialAction={initialAction}
-                            setInitialAction={setInitialAction}
-                            packages={packages}
-                            onSignContract={() => {}}
+                            onSignContract={async (contractId: string, sig: string, signer: 'vendor' | 'client') => {
+                                try {
+                                    const field = signer === 'vendor' ? 'vendorSignature' : 'clientSignature';
+                                    setContracts(prev => prev.map(c => c.id === contractId ? { ...c, [field]: sig } : c));
+                                    await updateContractInDb(contractId, { [field]: sig } as any);
+                                    showNotification("Tanda tangan kontrak berhasil disimpan.");
+                                } catch (e) { showNotification("Gagal menyimpan tanda tangan kontrak."); }
+                            }}
                         />
                     </DataLoadingWrapper>
                 );

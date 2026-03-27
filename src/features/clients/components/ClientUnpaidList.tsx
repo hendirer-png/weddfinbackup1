@@ -1,5 +1,5 @@
 import React from 'react';
-import { WhatsappIcon } from '@/constants';
+import { WhatsappIcon, EyeIcon } from '@/constants';
 import { ExtendedClient } from '@/features/clients/types';
 import { formatCurrency } from '@/features/clients/utils/clients.utils';
 
@@ -63,8 +63,9 @@ export const ClientUnpaidList: React.FC<ClientUnpaidListProps> = ({
                                 >
                                     <WhatsappIcon className="w-4 h-4" />
                                 </button>
-                                <div className="px-2 py-1 rounded bg-gray-100 text-[10px] font-bold text-gray-500 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                    DETAIL
+                                <div className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-all text-[10px] font-bold shadow-sm">
+                                    <EyeIcon className="w-3.5 h-3.5" />
+                                    <span>DETAIL</span>
                                 </div>
                             </div>
                         </div>
