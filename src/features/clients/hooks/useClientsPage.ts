@@ -324,7 +324,13 @@ export const useClientsPage = ({
                     address: formData.address || undefined,
                     addOns: selectedAddOns.map(a => ({ id: a.id, name: a.name, price: a.price })),
                 } as any);
-                setProjects(prev => prev.map(p => p.id === updatedProject.id ? { ...updatedProject, addOns: selectedAddOns } as Project : p));
+                setProjects(prev => prev.map(p => p.id === updatedProject.id ? { 
+                    ...updatedProject, 
+                    addOns: selectedAddOns,
+                    // Preserve relations not returned by standard updateProjectRow
+                    team: p.team || [],
+                    weddingDayChecklist: p.weddingDayChecklist || [],
+                } as Project : p));
                 
                 showNotification(`Data berhasil diperbarui.`);
                 handleCloseModal();

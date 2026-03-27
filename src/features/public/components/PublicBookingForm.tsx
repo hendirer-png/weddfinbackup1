@@ -61,7 +61,14 @@ const PublicBookingForm: React.FC<PublicBookingFormProps> = ({
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
     const formRef = useRef<HTMLDivElement>(null);
     const [leadId, setLeadId] = useState<string | null>(null);
-    const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+    const [selectedRegion, setSelectedRegion] = useState<string | null>(() => {
+        const hash = window.location.hash;
+        if (hash.includes('?')) {
+            const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
+            return urlParams.get('region')?.toLowerCase() || null;
+        }
+        return null;
+    });
     const [isLeadDataLoaded, setIsLeadDataLoaded] = useState(false);
     const [isPackagesLoading, setIsPackagesLoading] = useState(true);
 
@@ -130,20 +137,26 @@ const PublicBookingForm: React.FC<PublicBookingFormProps> = ({
         });
     }, [addOns, selectedRegion]);
 
-    // Parse region from URL only once on mount
+    // Parse region from URL and listen for hash changes
     useEffect(() => {
-        const hash = window.location.hash;
-        if (hash.includes('?')) {
-            const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
-            const regionParam = urlParams.get('region');
-            if (regionParam) {
-                const normalizedRegion = regionParam.toLowerCase();
-                setSelectedRegion(normalizedRegion);
-                if (import.meta.env.DEV) {
-                    console.log('Region selected from URL:', normalizedRegion);
+        const handleHashChange = () => {
+            const hash = window.location.hash;
+            if (hash.includes('?')) {
+                const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
+                const regionParam = urlParams.get('region');
+                if (regionParam) {
+                    const normalizedRegion = regionParam.toLowerCase();
+                    setSelectedRegion(normalizedRegion);
+                    if (import.meta.env.DEV) {
+                        console.log('Region selected from URL change:', normalizedRegion);
+                    }
                 }
             }
-        }
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+        handleHashChange(); // Initial check
+        return () => window.removeEventListener('hashchange', handleHashChange);
     }, []);
 
     // Handle lead ID separately when leads data is available (only once)
@@ -480,7 +493,20 @@ const PublicBookingForm: React.FC<PublicBookingFormProps> = ({
             <div className="flex items-center justify-center min-h-screen p-3 md:p-4">
                 <div className="w-full max-w-2xl p-6 md:p-8 text-center bg-public-surface rounded-2xl shadow-lg border border-public-border">
                     <h1 className="text-xl md:text-2xl font-bold text-gradient">Terima Kasih!</h1>
-                    <p className="mt-4 text-sm md:text-base text-public-text-primary">Formulir pemesanan Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda untuk konfirmasi lebih lanjut.</p>
+                    <p className="mt-4 text-sm md:text-base text-public-text-primary mb-6">Formulir pemesanan Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda untuk konfirmasi lebih lanjut.</p>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setIsSubmitted(false);
+                            setFormData({ ...initialFormState, projectType: userProfile.projectTypes[0] || '' });
+                            setPaymentProof(null);
+                            setPromoFeedback({ type: '', message: '' });
+                            setHoneypot('');
+                        }}
+                        className="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+                    >
+                        Buat Booking Baru
+                    </button>
                 </div>
             </div>
         );

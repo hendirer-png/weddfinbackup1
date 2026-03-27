@@ -72,8 +72,14 @@ export const usePackages = (props: {
     // --- Computed Data ---
     const publicPackagesUrl = useMemo(() => {
         const vendorId = 'VEN001'; // Placeholder
-        return `${window.location.origin}${window.location.pathname}#/public-packages/${vendorId}`;
-    }, []);
+        const base = `${window.location.origin}${window.location.pathname}#/public-packages/${vendorId}`;
+        return regionFilter ? `${base}?region=${regionFilter.toLowerCase()}` : base;
+    }, [regionFilter]);
+
+    const publicBookingUrl = useMemo(() => {
+        const base = `${window.location.origin}${window.location.pathname}#/public-booking`;
+        return regionFilter ? `${base}?region=${regionFilter.toLowerCase()}` : base;
+    }, [regionFilter]);
 
     const existingRegions = useMemo(() => {
         const set = new Set<string>();
@@ -350,6 +356,7 @@ export const usePackages = (props: {
         
         // Computed
         publicPackagesUrl,
+        publicBookingUrl,
         unionRegions,
         packagesByCategory,
         existingRegions,

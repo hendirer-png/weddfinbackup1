@@ -262,17 +262,58 @@ export const useProjectActions = ({
                 setProjects(prev => [created, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
                 showNotification('Berhasil menambah Acara Pernikahan');
             } else {
-                await updateProjectInDb(projectData.id, projectData);
-                // Also update assignments and payments (simplified for the hook)
-                await upsertAssignmentsForProject(projectData.id, (projectData.team || []).map((t: any) => ({
+                const fieldsToUpdate = {
+                    projectName: projectData.projectName,
+                    projectType: projectData.projectType,
+                    date: projectData.date,
+                    deadlineDate: projectData.deadlineDate,
+                    startTime: projectData.startTime,
+                    endTime: projectData.endTime,
+                    location: projectData.location,
+                    address: projectData.address,
+                    driveLink: projectData.driveLink,
+                    clientDriveLink: projectData.clientDriveLink,
+                    finalDriveLink: projectData.finalDriveLink,
+                    shippingDetails: projectData.shippingDetails,
+                    notes: projectData.notes,
+                    status: projectData.status,
+                    progress: projectData.progress,
+                    activeSubStatuses: projectData.activeSubStatuses,
+                    customSubStatuses: projectData.customSubStatuses,
+                };
+                
+                await updateProjectInDb(projectData.id, fieldsToUpdate);
+                
+                // Also update assignments
+                const newTeam = (projectData.team || []).map((t: any) => ({
                     memberId: t.memberId,
                     name: t.name,
                     role: t.role,
                     fee: t.fee,
                     subJob: t.subJob,
-                })));
+                }));
+                await upsertAssignmentsForProject(projectData.id, newTeam);
                 
-                setProjects(prev => prev.map(p => p.id === projectData.id ? projectData : p));
+                setProjects(prev => prev.map(p => {
+                    if (p.id === projectData.id) {
+                        const updated = { 
+                            ...p, 
+                            ...fieldsToUpdate, 
+                            team: newTeam,
+                            printingDetails: projectData.printingDetails,
+                            customCosts: projectData.customCosts,
+                            totalCost: projectData.totalCost,
+                            amountPaid: projectData.amountPaid,
+                            paymentStatus: projectData.paymentStatus,
+                        };
+                        if (selectedProject?.id === projectData.id) {
+                            setSelectedProject(updated);
+                        }
+                        return updated;
+                    }
+                    return p;
+                }));
+                
                 showNotification('Berhasil memperbarui Acara Pernikahan');
             }
 

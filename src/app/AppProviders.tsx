@@ -31,7 +31,10 @@ import { listAddOns } from "@/services/addOns";
 import { listLeads as listLeadsFromDb } from "@/services/leads";
 import { getProfile as getProfileFromDb } from "@/services/profile";
 import { listAllTeamPayments } from "@/services/teamProjectPayments";
-import { listProjectsWithRelations } from "@/services/projects";
+import { listProjectsWithRelations, normalizeProject } from "@/services/projects";
+import { normalizeClient } from "@/services/clients";
+import { normalizeTransaction } from "@/services/transactions";
+import { normalizeLead } from "@/services/leads";
 
 interface AppContextType {
   // Auth
@@ -229,8 +232,8 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (appData.loaded.clients) setClients(appData.clients);
     const channel = supabase.channel("realtime-clients").on("postgres_changes", { event: "*", schema: "public", table: "clients" }, (payload) => {
-      if (payload.eventType === "INSERT") setClients((prev) => [payload.new as Client, ...prev]);
-      if (payload.eventType === "UPDATE") setClients((prev) => prev.map((c) => c.id === payload.new.id ? ({ ...c, ...payload.new } as Client) : c));
+      if (payload.eventType === "INSERT") setClients((prev) => [normalizeClient(payload.new), ...prev]);
+      if (payload.eventType === "UPDATE") setClients((prev) => prev.map((c) => c.id === payload.new.id ? ({ ...c, ...normalizeClient(payload.new) } as Client) : c));
       if (payload.eventType === "DELETE") setClients((prev) => prev.filter((c) => c.id !== (payload.old as any).id));
     }).subscribe();
     return () => { supabase.removeChannel(channel); };
@@ -268,8 +271,8 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (appData.loaded.transactions) setTransactions(appData.transactions);
     const channel = supabase.channel("realtime-transactions").on("postgres_changes", { event: "*", schema: "public", table: "transactions" }, (payload) => {
-      if (payload.eventType === "INSERT") setTransactions((prev) => [payload.new as Transaction, ...prev]);
-      if (payload.eventType === "UPDATE") setTransactions((prev) => prev.map((t) => t.id === payload.new.id ? ({ ...t, ...payload.new } as Transaction) : t));
+      if (payload.eventType === "INSERT") setTransactions((prev) => [normalizeTransaction(payload.new), ...prev]);
+      if (payload.eventType === "UPDATE") setTransactions((prev) => prev.map((t) => t.id === payload.new.id ? ({ ...t, ...normalizeTransaction(payload.new) } as Transaction) : t));
       if (payload.eventType === "DELETE") setTransactions((prev) => prev.filter((t) => t.id !== (payload.old as any).id));
     }).subscribe();
     return () => { supabase.removeChannel(channel); };
@@ -279,8 +282,8 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (appData.loaded.projects) setProjects(appData.projects as any);
     const channel = supabase.channel("realtime-projects-init").on("postgres_changes", { event: "*", schema: "public", table: "projects" }, (payload) => {
-      if (payload.eventType === "INSERT") setProjects((prev) => [payload.new as Project, ...prev]);
-      if (payload.eventType === "UPDATE") setProjects((prev) => prev.map((p) => p.id === payload.new.id ? ({ ...p, ...payload.new } as Project) : p));
+      if (payload.eventType === "INSERT") setProjects((prev) => [normalizeProject(payload.new), ...prev]);
+      if (payload.eventType === "UPDATE") setProjects((prev) => prev.map((p) => p.id === payload.new.id ? ({ ...p, ...normalizeProject(payload.new) } as Project) : p));
       if (payload.eventType === "DELETE") setProjects((prev) => prev.filter((p) => p.id !== (payload.old as any).id));
     }).subscribe();
     return () => { supabase.removeChannel(channel); };
@@ -368,8 +371,8 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
     }).subscribe();
 
     const leadChannel = supabase.channel("realtime-leads").on("postgres_changes", { event: "*", schema: "public", table: "leads" }, (payload) => {
-      if (payload.eventType === "INSERT") setLeads(curr => [payload.new as Lead, ...curr]);
-      if (payload.eventType === "UPDATE") setLeads(curr => curr.map(l => l.id === payload.new.id ? ({ ...l, ...payload.new } as Lead) : l));
+      if (payload.eventType === "INSERT") setLeads(curr => [normalizeLead(payload.new), ...curr]);
+      if (payload.eventType === "UPDATE") setLeads(curr => curr.map(l => l.id === payload.new.id ? ({ ...l, ...normalizeLead(payload.new) } as Lead) : l));
       if (payload.eventType === "DELETE") setLeads(curr => curr.filter(l => l.id !== (payload.old as any).id));
     }).subscribe();
 

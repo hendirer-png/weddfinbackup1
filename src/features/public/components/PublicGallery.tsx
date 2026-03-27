@@ -3,6 +3,7 @@ import { Gallery, GalleryImage, Profile } from '@/types';
 import { getPublicGallery } from '@/services/galleries';
 import { getProfile } from '@/services/profile';
 import { cleanPhoneNumber } from '@/constants';
+import { LazyImage } from '@/shared/ui/LazyImage';
 
 interface PublicGalleryProps {
     galleryId: string;
@@ -164,16 +165,10 @@ const PublicGallery: React.FC<PublicGalleryProps> = ({ galleryId }) => {
                                     className="break-inside-avoid cursor-pointer group overflow-hidden relative bg-gray-100"
                                     onClick={() => openLightbox(image, index)}
                                 >
-                                    <img
+                                    <LazyImage
                                         src={sanitizeImageUrl(image.thumbnailUrl || image.url)}
                                         alt={image.caption || `Foto ${index + 1}`}
-                                        className="w-full h-auto object-cover transition-opacity duration-300"
-                                        loading={index < 8 ? "eager" : "lazy"}
-                                        decoding="async"
-                                        onLoad={(e) => {
-                                            e.currentTarget.style.opacity = '1';
-                                        }}
-                                        style={{ opacity: 0 }}
+                                        className="w-full h-auto aspect-square sm:aspect-auto"
                                     />
                                 </div>
                             ))}

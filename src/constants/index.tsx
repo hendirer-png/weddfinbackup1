@@ -708,7 +708,6 @@ export const NAV_ITEMS = [
     { view: ViewType.FINANCE, label: 'Keuangan', icon: DollarSignIcon },
     { view: ViewType.PACKAGES, label: 'Layanan / Package', icon: PackageIcon },
     { view: ViewType.PROMO_CODES, label: 'Voucher', icon: LightbulbIcon },
-    { view: ViewType.GALLERY, label: 'Upload Pricelist Publik', icon: ImageIcon },
     { view: ViewType.CLIENT_REPORTS, label: 'Testimoni', icon: ChartPieIcon },
     { view: ViewType.SETTINGS, label: 'Pengaturan', icon: SettingsIcon },
 ];

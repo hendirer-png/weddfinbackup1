@@ -110,6 +110,7 @@ export const AppRoutes: React.FC = () => {
             packages: ViewType.PACKAGES,
             "promo-codes": ViewType.PROMO_CODES,
             gallery: ViewType.GALLERY,
+            "pricelist-upload": ViewType.GALLERY,
             "client-reports": ViewType.CLIENT_REPORTS,
             settings: ViewType.SETTINGS,
             kontrak: ViewType.CONTRACTS,
@@ -255,7 +256,7 @@ export const AppRoutes: React.FC = () => {
             case ViewType.PROMO_CODES:
                 return <PromoCodes promoCodes={promoCodes} setPromoCodes={setPromoCodes} projects={projects} showNotification={showNotification} />;
             case ViewType.GALLERY:
-                return <GalleryUpload userProfile={profile} showNotification={showNotification} />;
+                return <Packages packages={packages} setPackages={setPackages} addOns={addOns} setAddOns={setAddOns} projects={projects} profile={profile} />;
             case ViewType.CONTRACTS:
                 return (
                     <DataLoadingWrapper loading={appData.loading.contracts} loaded={appData.loaded.contracts} loadingMessage="Memuat data kontrak..." onRetry={appData.loadContracts}>

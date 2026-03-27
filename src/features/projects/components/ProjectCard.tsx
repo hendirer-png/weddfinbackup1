@@ -41,7 +41,7 @@ const getProgressPercentage = (status: string, config: ProjectStatusConfig[]): n
     return ((statusIndex + 1) / config.length) * 100;
 };
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({
+export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({
     project,
     client,
     projectStatusConfig,
@@ -200,6 +200,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             </div>
         </div>
     );
-};
+});
 
 export default ProjectCard;

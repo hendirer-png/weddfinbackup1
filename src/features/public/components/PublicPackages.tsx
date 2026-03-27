@@ -104,7 +104,6 @@ const PublicPackages: React.FC<PublicPackagesProps> = ({ userProfile: initialUse
                         setUserProfile(profileData);
                     }
                 }
-
                 setError(null);
             } catch (err) {
                 console.error('Error loading data:', err);
@@ -115,6 +114,28 @@ const PublicPackages: React.FC<PublicPackagesProps> = ({ userProfile: initialUse
         };
 
         loadData();
+    }, []);
+
+    // Parse region from URL hash and listen for changes
+    useEffect(() => {
+        const handleHashChange = () => {
+            const hash = window.location.hash;
+            if (hash.includes('?')) {
+                const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
+                const regionParam = urlParams.get('region');
+                if (regionParam) {
+                    const normalizedRegion = regionParam.toLowerCase();
+                    setSelectedRegion(normalizedRegion);
+                    if (import.meta.env.DEV) {
+                        console.log('Region selected from URL change (PublicPackages):', normalizedRegion);
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+        handleHashChange();
+        return () => window.removeEventListener('hashchange', handleHashChange);
     }, []);
     const template = publicPageConfig?.template ?? 'modern';
     const visiblePackages = useMemo(() => {

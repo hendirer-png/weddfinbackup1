@@ -153,7 +153,7 @@ export async function deleteClient(id: string): Promise<void> {
 }
 
 // Helpers to map between DB row and TS type (in case of snake_case in DB)
-function normalizeClient(row: any): Client {
+export function normalizeClient(row: any): Client {
   return {
     id: row.id,
     name: row.name,

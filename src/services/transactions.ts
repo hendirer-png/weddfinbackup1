@@ -188,7 +188,7 @@ export async function updatePocketBalance(pocketId: string, delta: number): Prom
   }
 }
 
-function normalizeTransaction(row: TransactionRow): Transaction {
+export function normalizeTransaction(row: TransactionRow | any): Transaction {
   return {
     id: row.id,
     date: row.date,

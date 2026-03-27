@@ -35,7 +35,6 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ activeView, setActiveView,
       views: [
         ViewType.PACKAGES,
         ViewType.PROMO_CODES,
-        ViewType.GALLERY,
       ],
     },
     {

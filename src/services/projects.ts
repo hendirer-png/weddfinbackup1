@@ -46,7 +46,7 @@ export type UpdateProjectInput = Partial<CreateProjectInput> & Partial<Pick<Proj
   | 'isDeliveryConfirmedByClient' | 'durationSelection' | 'statusHistory' | 'address'
 >> & { addOns?: { id: string; name: string; price: number }[] };
 
-function normalizeProject(row: any): Project {
+export function normalizeProject(row: any): Project {
   return {
     id: row.id,
     projectName: row.project_name,

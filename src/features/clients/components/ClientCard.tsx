@@ -41,7 +41,7 @@ const formatPhoneNumber = (phone: string) => {
     return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 8)}-${cleaned.slice(8)}`;
 };
 
-export const ClientCard: React.FC<ClientCardProps> = ({
+export const ClientCard: React.FC<ClientCardProps> = React.memo(({
     client,
     projects,
     onViewDetails,
@@ -239,6 +239,6 @@ export const ClientCard: React.FC<ClientCardProps> = ({
             </div>
         </div>
     );
-};
+});
 
 export default ClientCard;

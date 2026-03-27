@@ -34,7 +34,7 @@ export async function deleteLead(id: string): Promise<void> {
   if (error) throw error;
 }
 
-function normalizeLead(row: any): Lead {
+export function normalizeLead(row: any): Lead {
   return {
     id: row.id,
     name: row.name,

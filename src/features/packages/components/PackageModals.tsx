@@ -33,23 +33,46 @@ export const PackageInfoModal: React.FC<{ isOpen: boolean; onClose: () => void }
     </Modal>
 );
 
-export const PackageShareModal: React.FC<{ isOpen: boolean; onClose: () => void; publicUrl: string; onCopyLink: () => void }> = ({ 
-    isOpen, onClose, publicUrl, onCopyLink 
+export const PackageShareModal: React.FC<{ 
+    isOpen: boolean; 
+    onClose: () => void; 
+    publicUrl: string; 
+    bookingUrl: string;
+    onCopyLink: () => void; 
+    onCopyBookingLink: () => void;
+    regionName?: string;
+}> = ({ 
+    isOpen, onClose, publicUrl, bookingUrl, onCopyLink, onCopyBookingLink, regionName 
 }) => (
-    <Modal isOpen={isOpen} onClose={onClose} title="Bagikan Portofolio Package">
-        <div className="space-y-4">
-            <p className="text-sm text-brand-text-secondary">Gunakan tautan ini untuk membagikan daftar Package Anda kepada calon pengantin.</p>
-            <div className="p-4 bg-brand-bg rounded-2xl border-2 border-dashed border-brand-border flex flex-col items-center gap-4">
-                <div className="w-16 h-16 bg-brand-accent/10 rounded-full flex items-center justify-center">
-                    <Share2Icon className="w-8 h-8 text-brand-accent" />
-                </div>
-                <div className="w-full">
-                    <p className="text-[10px] font-bold text-brand-text-secondary uppercase tracking-widest text-center mb-2">Tautan Publik Anda</p>
-                    <div className="bg-white p-3 rounded-xl border border-brand-border text-center break-all text-xs font-medium text-brand-text-primary select-all">
+    <Modal isOpen={isOpen} onClose={onClose} title={`Bagikan Tautan ${regionName ? `(${regionName})` : ''}`}>
+        <div className="space-y-6">
+            <p className="text-sm text-brand-text-secondary">Pilih tautan yang ingin Anda bagikan kepada calon pengantin.</p>
+            
+            <div className="space-y-4">
+                {/* Pricelist Link */}
+                <div className="p-4 bg-brand-bg rounded-2xl border border-brand-border flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-[10px] font-bold text-brand-text-secondary uppercase tracking-widest">Tautan Pricelist (Katalog)</p>
+                        <span className="bg-brand-accent/10 px-2 py-0.5 rounded text-[9px] font-bold text-brand-accent uppercase">Public</span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-xl border border-brand-border text-xs font-medium text-brand-text-primary truncate select-all">
                         {publicUrl}
                     </div>
+                    <button onClick={onCopyLink} className="button-primary py-2 text-xs shadow-md">Salin Tautan Pricelist</button>
                 </div>
-                <button onClick={onCopyLink} className="button-primary w-full py-3 shadow-lg">Salin Tautan</button>
+
+                {/* Booking Link */}
+                <div className="p-4 bg-brand-bg rounded-2xl border border-brand-border flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-[10px] font-bold text-brand-text-secondary uppercase tracking-widest">Tautan Formulir Booking</p>
+                        <span className="bg-green-500/10 px-2 py-0.5 rounded text-[9px] font-bold text-green-600 uppercase">Direct</span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-xl border border-brand-border text-xs font-medium text-brand-text-primary truncate select-all">
+                        {bookingUrl}
+                    </div>
+                    <button onClick={onCopyBookingLink} className="button-secondary py-2 text-xs shadow-md border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white">Salin Tautan Booking</button>
+                    <p className="text-[9px] text-brand-text-secondary italic text-center">* Tautan ini langsung menuju formulir pemesanan{regionName ? ` yang sudah terfilter untuk wilayah ${regionName}` : ''}.</p>
+                </div>
             </div>
         </div>
     </Modal>
